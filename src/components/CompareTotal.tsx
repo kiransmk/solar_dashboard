@@ -1,19 +1,10 @@
 import TotalWithUnit from "./TotalWithUnit";
-import { DataPointT } from "../types";
+import { useMonthDataContext } from "../contexts/MonthDataContext";
 
-type CompareTotalPropsT = {
-  currentMonthData: DataPointT[];
-  currentMonthYear: string;
-  prevMonthData?: DataPointT[];
-  prevMonthYear?: string;
-};
+export default function CompareTotal() {
+  const { currentMonthData, prevMonthData, currentMonthYear, prevMonthYear } =
+    useMonthDataContext();
 
-export default function CompareTotal({
-  currentMonthData,
-  currentMonthYear,
-  prevMonthData,
-  prevMonthYear,
-}: CompareTotalPropsT) {
   return (
     <div className="flex flex-row h-[100px] mx-8 mb-8 rounded border border-gray-300 font-semibold text-blue-gray-900">
       <TotalWithUnit

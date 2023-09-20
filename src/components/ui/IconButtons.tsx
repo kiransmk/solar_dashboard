@@ -4,6 +4,7 @@ type IconButtonPropsT = {
   children: ReactNode;
   onClick?: () => void;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
+
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonPropsT>(
   ({ children, onClick, ...rest }, ref) => {
     return (
@@ -19,13 +20,8 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonPropsT>(
   }
 );
 
-type CircleIconButtonPropsT = {
-  children: ReactNode;
-  onClick?: () => void;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
-
-// Create a higher-order component (HOC) that wraps CircleIconButton
-const withCircleIconButton = <P extends CircleIconButtonPropsT>(
+// Create a higher-order component (HOC) that wraps IconButton
+const withCircleIconButton = <P extends IconButtonPropsT>(
   WrappedComponent: React.ComponentType<P>
 ) => {
   return forwardRef<HTMLButtonElement, P>((props, ref) => {

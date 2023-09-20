@@ -3,41 +3,53 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { IconButton } from "./ui/IconButtons";
 import Container from "./ui/Container";
+import { useMonthDataContext } from "../contexts/MonthDataContext";
+import { getNextMonth, getPrevMonth } from "../utils/timeHelpers";
 
-type MonthNavT = {
-  date: string;
-  overrideCalendar?: boolean;
-  overrideString?: string;
-  onPrevious?: () => void;
-  onNext?: () => void;
-  isMoreDataNext: boolean;
-  isMoreDataPrev: boolean;
+type CalendarNavPropsT = {
+  className: string;
 };
 
-export default function CalendarNav({
-  date,
-  overrideCalendar,
-  overrideString,
-  onPrevious,
-  onNext,
-  isMoreDataNext,
-  isMoreDataPrev,
-}: MonthNavT) {
+export default function CalendarNav({ className }: CalendarNavPropsT) {
+  const {
+    currentMonth,
+    onCurrentMonthChange,
+    currentYear,
+    prevMonthData,
+    hasNextMonthData,
+    currentMonthYear,
+    overrideCalendar,
+    overrideString,
+  } = useMonthDataContext();
+
+  const handlePreviousClick = () => {
+    const [month, year] = getPrevMonth(currentMonth, currentYear);
+    onCurrentMonthChange(month, year);
+  };
+
+  const handleNextClick = () => {
+    const [month, year] = getNextMonth(currentMonth, currentYear);
+    onCurrentMonthChange(month, year);
+  };
+
   return (
-    <div className="w-full bg-gray-200 p-4">
+    <div className={`w-full bg-gray-200 p-4 ${className}`}>
       <Container>
         {overrideCalendar ? (
           <span>{overrideString}</span>
         ) : (
           <div className="flex justify-between items-center">
-            <IconButton onClick={onPrevious} disabled={!isMoreDataPrev}>
+            <IconButton
+              onClick={handlePreviousClick}
+              disabled={!Boolean(prevMonthData)}
+            >
               <ArrowBackIosIcon />
             </IconButton>
             <div className="flex align-center gap-2 items-center">
               <CalendarMonthIcon />
-              <span>{date}</span>
+              <span>{currentMonthYear}</span>
             </div>
-            <IconButton onClick={onNext} disabled={!isMoreDataNext}>
+            <IconButton onClick={handleNextClick} disabled={!hasNextMonthData}>
               <ArrowForwardIosIcon />
             </IconButton>
           </div>
