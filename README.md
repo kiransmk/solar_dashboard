@@ -35,7 +35,7 @@ following:
 
 ## Application Setup
 
-Application is built with React + TypeScript + Vite + Supabase + TailwindCss
+Application is built with React + TypeScript + Vite + TailwindCss
 
 ### Setup Frontend on your local
 
