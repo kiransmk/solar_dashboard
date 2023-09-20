@@ -7,7 +7,7 @@ type LayoutT = {
 
 const Layout = ({ children }: LayoutT) => {
   return (
-    <div className="h-[100vh] w-screen min-w-[540px] overflow-scroll">
+    <div className="h-screen w-screen overflow-scroll pb-8">
       <StickyNavbar />
       {children}
     </div>
