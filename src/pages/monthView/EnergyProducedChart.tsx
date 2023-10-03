@@ -1,24 +1,25 @@
 import { useState } from "react";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
-import { CircleIconButton } from "./ui/IconButtons";
-import ComposedChart from "./ui/ComposedChart";
-import MonthSwitch from "./MonthSwitch";
-import { DataPointT } from "../types";
+import { useMonthDataContext } from "../../contexts/MonthDataContext";
+import { CircleIconButton } from "../../components/ui/IconButtons";
+import ComposedChart from "../../components/ui/ComposedChart";
+import MonthSwitch from "../../components/MonthSwitch";
+import { DataPointT } from "../../types";
+import { getDateMonthYearString } from "../../utils/timeHelpers";
 
-type ChartPropsT<T> = {
-  barData: T[];
-  lineData: T[];
-  currentMonthYear: string;
-  prevMonthYear: string;
-  onHover: (e: T | undefined) => void;
-};
-export default function EnergyProducedChart({
-  barData,
-  lineData,
-  currentMonthYear,
-  prevMonthYear,
-  onHover,
-}: ChartPropsT<DataPointT>) {
+export default function MonthEnergyChart() {
+  const {
+    currentMonth,
+    currentYear,
+    currentMonthData,
+    prevMonthData,
+    currentMonthYear,
+    prevMonthYear,
+    setOverrideCalendar,
+    setDisplayDate,
+    setOverrideString,
+  } = useMonthDataContext();
+
   const [displayCurrentMonth, setDisplayCurrentMonth] = useState(true);
   const [displayPrevMonth, setDisplayPrevMonth] = useState(false);
 
@@ -30,6 +31,15 @@ export default function EnergyProducedChart({
     setDisplayPrevMonth(checked);
   };
 
+  const handleHoverOverChart = (e: DataPointT | undefined) => {
+    // TODO: update compareTotal
+    setOverrideCalendar(Boolean(e));
+    if (e) {
+      setDisplayDate(e.d);
+      setOverrideString(getDateMonthYearString(e.d, currentMonth, currentYear));
+    }
+  };
+
   return (
     <div className="relative flex flex-col justify-center w-full mt-4 pt-6 pr-6 h-[500px]">
       {/* TODO: Full window Implementation - popup modal that fits full window size*/}
@@ -37,15 +47,15 @@ export default function EnergyProducedChart({
         <OpenInFullIcon />
       </CircleIconButton>
       <ComposedChart
-        barData={barData.map(({ val, d }) => ({
+        barData={currentMonthData.map(({ val, d }) => ({
           val: displayCurrentMonth ? val : 0,
           d: d,
         }))}
         barDataKey="val"
-        lineData={lineData}
+        lineData={prevMonthData}
         lineDataKey="val"
         displayLine={displayPrevMonth}
-        onHover={onHover}
+        onHover={handleHoverOverChart}
         xAxisDomain={[0, 31]}
         xAxisTickCount={30}
         yAxisLabel="kWh"

@@ -48,3 +48,28 @@ export function getDateMonthYearString(
 ) {
   return date + " " + getMonthString(monthNumber) + ", " + year;
 }
+
+const inSec = 1;
+const inMin = inSec * 60;
+const inHrs = inMin * 60;
+const inDays = inHrs * 24;
+
+export function timeSince(dt: number = 1695823233968): string {
+  const d = new Date(dt);
+  const now = Date.now();
+  const diff = now - d.valueOf();
+  const diffSec = Math.floor(diff / 1000);
+
+  if (diffSec >= inDays) {
+    const days = Math.floor(diffSec / inDays);
+    return days + " days";
+  } else if (diffSec >= inHrs) {
+    const hrs = Math.floor(diffSec / inHrs);
+    return hrs + " hours";
+  } else if (diffSec >= inMin) {
+    const min = Math.floor(diffSec / inMin);
+    return min + " min";
+  } else {
+    return diffSec + " seconds";
+  }
+}
