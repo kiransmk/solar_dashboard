@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material";
 import { getTotalWUnits, withUnits } from "../utils/unitHelpers";
 import { DataPointT } from "../types";
 
@@ -39,7 +38,7 @@ export default function TotalWithUnit({
             <span className="font-bold">{measuredValue}</span>
             <span className="font-light text-sm">&nbsp;{unit}</span>
           </div>
-          <Typography>{monthYear}</Typography>
+          <div>{monthYear}</div>
         </>
       )}
     </div>
