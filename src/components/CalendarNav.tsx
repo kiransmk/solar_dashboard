@@ -39,10 +39,7 @@ export default function CalendarNav({ className }: CalendarNavPropsT) {
           <span>{overrideString}</span>
         ) : (
           <div className="flex justify-between items-center">
-            <IconButton
-              onClick={handlePreviousClick}
-              disabled={!Boolean(prevMonthData)}
-            >
+            <IconButton onClick={handlePreviousClick} disabled={!prevMonthData}>
               <ArrowBackIosIcon />
             </IconButton>
             <div className="flex align-center gap-2 items-center">

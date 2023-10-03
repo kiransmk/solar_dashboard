@@ -1,14 +1,14 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useMemo } from "react";
 import useGetData from "../hooks/useGetData";
 import { DataPointT } from "../types";
 import {
   getMonthYearString,
   getNextMonth,
   getPrevMonth,
-  getDateMonthYearString,
 } from "../utils/timeHelpers";
 
 type MonthDataContextType = {
+  dataTimeStamp: number;
   currentMonth: number;
   setCurrentMonth: React.Dispatch<React.SetStateAction<number>>;
 
@@ -17,10 +17,10 @@ type MonthDataContextType = {
   setCurrentYear: React.Dispatch<React.SetStateAction<number>>;
 
   currentMonthData: DataPointT[];
-  setCurrentMonthData: React.Dispatch<React.SetStateAction<any[]>>;
+  setCurrentMonthData: React.Dispatch<React.SetStateAction<DataPointT[]>>;
 
   prevMonthData: DataPointT[];
-  setPrevMonthData: React.Dispatch<React.SetStateAction<any[]>>;
+  setPrevMonthData: React.Dispatch<React.SetStateAction<DataPointT[]>>;
 
   hasNextMonthData: boolean;
   setHasNextMonthData: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,6 +33,9 @@ type MonthDataContextType = {
 
   overrideCalendar: boolean;
   setOverrideCalendar: React.Dispatch<React.SetStateAction<boolean>>;
+
+  displayDate: number;
+  setDisplayDate: React.Dispatch<React.SetStateAction<number>>;
 
   overrideString: string;
   setOverrideString: React.Dispatch<React.SetStateAction<string>>;
@@ -53,7 +56,7 @@ export function useMonthDataContext() {
 export function MonthDataProvider({ children }: { children: React.ReactNode }) {
   const initYear = new Date().getFullYear();
   const initMonth = new Date().getMonth() + 1;
-  const data = useGetData();
+  const [dataTimeStamp, data] = useMemo(() => useGetData(), []);
 
   const [currentMonth, setCurrentMonth] = useState<number>(initMonth);
   const [currentYear, setCurrentYear] = useState<number>(initYear);
@@ -63,6 +66,7 @@ export function MonthDataProvider({ children }: { children: React.ReactNode }) {
   const [currentMonthYear, setCurrentMonthYear] = useState<string>("");
   const [prevMonthYear, setPrevMonthYear] = useState<string>("");
   const [overrideCalendar, setOverrideCalendar] = useState<boolean>(false);
+  const [displayDate, setDisplayDate] = useState<number>(0);
   const [overrideString, setOverrideString] = useState<string>("");
 
   const onCurrentMonthChange = (month: number, year: number) => {
@@ -82,6 +86,7 @@ export function MonthDataProvider({ children }: { children: React.ReactNode }) {
   };
 
   const state: MonthDataContextType = {
+    dataTimeStamp,
     currentMonth,
     setCurrentMonth,
     onCurrentMonthChange,
@@ -99,6 +104,8 @@ export function MonthDataProvider({ children }: { children: React.ReactNode }) {
     setPrevMonthYear,
     overrideCalendar,
     setOverrideCalendar,
+    displayDate,
+    setDisplayDate,
     overrideString,
     setOverrideString,
   };

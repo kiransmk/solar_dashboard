@@ -9,9 +9,9 @@ type DataStructureT = {
   [year: number]: YearDataT;
 };
 
-const useGetData = (): DataStructureT => {
+const useGetData = (): [number, DataStructureT] => {
   const data: DataStructureT = {};
-
+  const dataTimeStamp: number = Date.now();
   for (let index = 0; index < DATA_LENGTH; index++) {
     const dt = new Date();
     dt.setDate(dt.getDate() - DATA_LENGTH + index);
@@ -31,7 +31,7 @@ const useGetData = (): DataStructureT => {
 
     data[year][month].push({ d: day, val });
   }
-  return data;
+  return [dataTimeStamp, data];
 };
 
 export default useGetData;

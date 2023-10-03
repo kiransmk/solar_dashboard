@@ -16,6 +16,7 @@ export default function MonthEnergyChart() {
     currentMonthYear,
     prevMonthYear,
     setOverrideCalendar,
+    setDisplayDate,
     setOverrideString,
   } = useMonthDataContext();
 
@@ -34,6 +35,7 @@ export default function MonthEnergyChart() {
     // TODO: update compareTotal
     setOverrideCalendar(Boolean(e));
     if (e) {
+      setDisplayDate(e.d);
       setOverrideString(getDateMonthYearString(e.d, currentMonth, currentYear));
     }
   };
